@@ -90,20 +90,100 @@ restartBtn.addEventListener('click', restartGame);
 
 document.addEventListener('keydown', handleKeyPress);
 
+// Mobile controls
+const mobileButtons = document.querySelectorAll('.mobile-btn');
+mobileButtons.forEach(btn => {
+    btn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (!gameStarted || gamePaused) return;
+        
+        const direction = btn.dataset.direction;
+        handleDirection(direction);
+    });
+    
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!gameStarted || gamePaused) return;
+        
+        const direction = btn.dataset.direction;
+        handleDirection(direction);
+    });
+});
+
+// Touch swipe controls for canvas
+let touchStartX = 0;
+let touchStartY = 0;
+
+canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+});
+
+canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+});
+
+canvas.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    if (!gameStarted || gamePaused) return;
+    
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+    
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > 30) {
+            handleDirection('right');
+        } else if (deltaX < -30) {
+            handleDirection('left');
+        }
+    } else {
+        if (deltaY > 30) {
+            handleDirection('down');
+        } else if (deltaY < -30) {
+            handleDirection('up');
+        }
+    }
+});
+
+function handleDirection(direction) {
+    switch(direction) {
+        case 'up':
+            pacman.nextDirection = { x: 0, y: -PACMAN_SPEED };
+            break;
+        case 'down':
+            pacman.nextDirection = { x: 0, y: PACMAN_SPEED };
+            break;
+        case 'left':
+            pacman.nextDirection = { x: -PACMAN_SPEED, y: 0 };
+            break;
+        case 'right':
+            pacman.nextDirection = { x: PACMAN_SPEED, y: 0 };
+            break;
+    }
+}
+
 function handleKeyPress(e) {
     if (!gameStarted || gamePaused) return;
 
     switch(e.key) {
         case 'ArrowUp':
+            e.preventDefault();
             pacman.nextDirection = { x: 0, y: -PACMAN_SPEED };
             break;
         case 'ArrowDown':
+            e.preventDefault();
             pacman.nextDirection = { x: 0, y: PACMAN_SPEED };
             break;
         case 'ArrowLeft':
+            e.preventDefault();
             pacman.nextDirection = { x: -PACMAN_SPEED, y: 0 };
             break;
         case 'ArrowRight':
+            e.preventDefault();
             pacman.nextDirection = { x: PACMAN_SPEED, y: 0 };
             break;
     }

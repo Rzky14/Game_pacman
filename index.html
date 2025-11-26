@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Pac-Man Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -30,6 +32,12 @@
             <p>🔴 Avoid the ghosts or lose a life!</p>
             <p>💊 Eat Power Pellets (50 pts) to eat ghosts for bonus points!</p>
             <p>👻 Eating ghosts: 200, 400, 800, 1600 pts</p>
+        </div>
+        <div class="mobile-controls">
+            <div class="mobile-btn up" data-direction="up">▲</div>
+            <div class="mobile-btn down" data-direction="down">▼</div>
+            <div class="mobile-btn left" data-direction="left">◀</div>
+            <div class="mobile-btn right" data-direction="right">▶</div>
         </div>
     </div>
     <script src="script.js"></script>
