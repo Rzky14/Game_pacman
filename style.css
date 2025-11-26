@@ -41,10 +41,26 @@ h1 {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
+    gap: 20px;
 }
 
-.score span, .lives span {
+.score span, .lives span, .level span {
     color: #ffff00;
+}
+
+.power-indicator {
+    color: #00ff00;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 5px;
+    animation: pulse 0.5s ease-in-out infinite;
+    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
 }
 
 #gameCanvas {
@@ -52,7 +68,8 @@ h1 {
     background: #000;
     display: block;
     margin: 0 auto;
-    box-shadow: 0 0 20px rgba(30, 144, 255, 0.5);
+    box-shadow: 0 0 20px rgba(30, 144, 255, 0.5), inset 0 0 20px rgba(30, 144, 255, 0.1);
+    border-radius: 5px;
 }
 
 .controls {
@@ -82,6 +99,7 @@ button {
 #startBtn:hover {
     background: #00cc00;
     transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
 }
 
 #pauseBtn {
@@ -92,6 +110,7 @@ button {
 #pauseBtn:hover {
     background: #cccc00;
     transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
 }
 
 #restartBtn {
@@ -102,6 +121,7 @@ button {
 #restartBtn:hover {
     background: #cc0000;
     transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
 }
 
 .instructions {

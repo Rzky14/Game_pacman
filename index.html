@@ -12,8 +12,10 @@
             <h1>PAC-MAN</h1>
             <div class="score-board">
                 <div class="score">Score: <span id="score">0</span></div>
+                <div class="level">Level: <span id="level">1</span></div>
                 <div class="lives">Lives: <span id="lives">3</span></div>
             </div>
+            <div id="powerMode" class="power-indicator" style="display: none;">POWER MODE!</div>
         </div>
         <canvas id="gameCanvas" width="560" height="620"></canvas>
         <div class="controls">
@@ -23,8 +25,11 @@
         </div>
         <div class="instructions">
             <h3>How to Play:</h3>
-            <p>Use Arrow Keys to move Pac-Man</p>
-            <p>Eat all dots to win! Avoid the ghosts!</p>
+            <p>🎮 Use Arrow Keys to move Pac-Man</p>
+            <p>⚪ Eat all dots (10 pts) to advance to next level!</p>
+            <p>🔴 Avoid the ghosts or lose a life!</p>
+            <p>💊 Eat Power Pellets (50 pts) to eat ghosts for bonus points!</p>
+            <p>👻 Eating ghosts: 200, 400, 800, 1600 pts</p>
         </div>
     </div>
     <script src="script.js"></script>
