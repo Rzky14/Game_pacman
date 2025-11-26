@@ -345,73 +345,64 @@ function moveGhosts() {
         if (ghost.eaten) return; // Don't move eaten ghosts
         
         const speed = ghost.frightened ? GHOST_SPEED * 0.5 : GHOST_SPEED;
-        const dx = pacman.x - ghost.x;
-        const dy = pacman.y - ghost.y;
         
-        let possibleDirections = [];
+        // Random chance to change direction (20% per frame)
+        const shouldRandomize = Math.random() < 0.2;
+        
+        let possibleDirections = [
+            { x: speed, y: 0 },
+            { x: -speed, y: 0 },
+            { x: 0, y: speed },
+            { x: 0, y: -speed }
+        ];
+        
+        // Shuffle directions for randomness
+        possibleDirections.sort(() => Math.random() - 0.5);
         
         if (ghost.frightened) {
-            // Run away from Pac-Man when frightened
-            if (Math.abs(dx) > Math.abs(dy)) {
-                if (dx > 0) possibleDirections.push({ x: -speed, y: 0 });
-                else possibleDirections.push({ x: speed, y: 0 });
-                
-                if (dy > 0) possibleDirections.push({ x: 0, y: -speed });
-                else possibleDirections.push({ x: 0, y: speed });
-            } else {
-                if (dy > 0) possibleDirections.push({ x: 0, y: -speed });
-                else possibleDirections.push({ x: 0, y: speed });
-                
-                if (dx > 0) possibleDirections.push({ x: -speed, y: 0 });
-                else possibleDirections.push({ x: speed, y: 0 });
-            }
-        } else {
-            // Chase Pac-Man normally
-            if (Math.abs(dx) > Math.abs(dy)) {
-                if (dx > 0) possibleDirections.push({ x: speed, y: 0 });
-                else possibleDirections.push({ x: -speed, y: 0 });
-                
-                if (dy > 0) possibleDirections.push({ x: 0, y: speed });
-                else possibleDirections.push({ x: 0, y: -speed });
-            } else {
-                if (dy > 0) possibleDirections.push({ x: 0, y: speed });
-                else possibleDirections.push({ x: 0, y: -speed });
-                
-                if (dx > 0) possibleDirections.push({ x: speed, y: 0 });
-                else possibleDirections.push({ x: -speed, y: 0 });
-            }
-        }
-        
-        // Add current direction as fallback
-        possibleDirections.push(ghost.direction);
-        
-        // Find first valid direction
-        let moved = false;
-        for (let dir of possibleDirections) {
-            if (canMove(ghost.x + dir.x, ghost.y + dir.y)) {
-                ghost.direction = dir;
-                ghost.x += dir.x;
-                ghost.y += dir.y;
-                moved = true;
-                break;
-            }
-        }
-        
-        // If can't move in any direction, try random
-        if (!moved) {
-            const randomDirs = [
-                { x: speed, y: 0 },
-                { x: -speed, y: 0 },
-                { x: 0, y: speed },
-                { x: 0, y: -speed }
-            ];
-            
-            for (let dir of randomDirs) {
+            // When frightened, move completely randomly
+            let moved = false;
+            for (let dir of possibleDirections) {
                 if (canMove(ghost.x + dir.x, ghost.y + dir.y)) {
                     ghost.direction = dir;
                     ghost.x += dir.x;
                     ghost.y += dir.y;
+                    moved = true;
                     break;
+                }
+            }
+        } else if (shouldRandomize) {
+            // Random movement - try random directions
+            let moved = false;
+            for (let dir of possibleDirections) {
+                if (canMove(ghost.x + dir.x, ghost.y + dir.y)) {
+                    ghost.direction = dir;
+                    ghost.x += dir.x;
+                    ghost.y += dir.y;
+                    moved = true;
+                    break;
+                }
+            }
+            
+            // If no random move worked, keep current direction
+            if (!moved && canMove(ghost.x + ghost.direction.x, ghost.y + ghost.direction.y)) {
+                ghost.x += ghost.direction.x;
+                ghost.y += ghost.direction.y;
+            }
+        } else {
+            // Continue in current direction or pick random if blocked
+            if (canMove(ghost.x + ghost.direction.x, ghost.y + ghost.direction.y)) {
+                ghost.x += ghost.direction.x;
+                ghost.y += ghost.direction.y;
+            } else {
+                // Blocked, pick random valid direction
+                for (let dir of possibleDirections) {
+                    if (canMove(ghost.x + dir.x, ghost.y + dir.y)) {
+                        ghost.direction = dir;
+                        ghost.x += dir.x;
+                        ghost.y += dir.y;
+                        break;
+                    }
                 }
             }
         }
