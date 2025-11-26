@@ -25,6 +25,9 @@ let powerMode = false;
 let powerModeTimer = 0;
 let level = 1;
 let ghostEatenCount = 0;
+let mapsCompleted = 0;
+let totalLivesLost = 0;
+let achievementUnlocked = false;
 
 // Pac-Man
 let pacman = {
@@ -162,6 +165,10 @@ restartBtn.addEventListener('click', restartGame);
 
 document.addEventListener('keydown', handleKeyPress);
 
+// Achievement modal buttons
+document.getElementById('continueBtn').addEventListener('click', continueGame);
+document.getElementById('closeAchievement').addEventListener('click', closeAchievement);
+
 // Mobile controls
 const mobileButtons = document.querySelectorAll('.mobile-btn');
 mobileButtons.forEach(btn => {
@@ -291,6 +298,9 @@ function restartGame() {
     powerMode = false;
     powerModeTimer = 0;
     currentMapIndex = 0;
+    mapsCompleted = 0;
+    totalLivesLost = 0;
+    achievementUnlocked = false;
     
     // Reset maze
     maze = JSON.parse(JSON.stringify(mazeLayouts[currentMapIndex]));
@@ -492,6 +502,7 @@ function checkGhostCollision() {
             } else if (!ghost.frightened) {
                 // Ghost caught Pac-Man
                 lives--;
+                totalLivesLost++;
                 updateLives();
                 
                 if (lives <= 0) {
@@ -538,8 +549,18 @@ function checkWin() {
     if (!dotsRemaining) {
         level++;
         score += 1000; // Bonus for completing level
+        mapsCompleted++;
         updateScore();
         updateLevel();
+        
+        // Check if all 3 maps completed
+        if (mapsCompleted === 3 && !achievementUnlocked) {
+            achievementUnlocked = true;
+            score += 5000; // Big bonus for completing all maps!
+            updateScore();
+            showAchievement();
+            return;
+        }
         
         // Cycle to next map
         currentMapIndex = (currentMapIndex + 1) % mazeLayouts.length;
@@ -567,6 +588,49 @@ function updateLives() {
 
 function updateLevel() {
     levelElement.textContent = level;
+}
+
+function showAchievement() {
+    gameStarted = false;
+    gamePaused = true;
+    
+    const modal = document.getElementById('achievementModal');
+    const finalScoreElement = document.getElementById('finalScore');
+    const livesLostElement = document.getElementById('livesLost');
+    
+    finalScoreElement.textContent = score;
+    livesLostElement.textContent = totalLivesLost;
+    
+    modal.style.display = 'flex';
+    
+    // Play celebration animation
+    setTimeout(() => {
+        modal.querySelector('.achievement-content').classList.add('celebrate');
+    }, 100);
+}
+
+function continueGame() {
+    const modal = document.getElementById('achievementModal');
+    modal.style.display = 'none';
+    
+    // Continue with next cycle
+    currentMapIndex = 0;
+    mapsCompleted = 0;
+    const mapNames = ['Classic', 'Open Corridors', 'Maze Challenge'];
+    
+    alert(`Continuing to Level ${level}...\nMap: ${mapNames[currentMapIndex]}`);
+    maze = JSON.parse(JSON.stringify(mazeLayouts[currentMapIndex]));
+    resetPositions();
+    
+    gameStarted = true;
+    gamePaused = false;
+    gameLoop();
+}
+
+function closeAchievement() {
+    const modal = document.getElementById('achievementModal');
+    modal.style.display = 'none';
+    gameOver();
 }
 
 function drawGame() {
