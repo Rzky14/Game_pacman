@@ -5,10 +5,16 @@ A classic Pac-Man game built with HTML5 Canvas, CSS, and JavaScript.
 ## Features
 
 - Classic Pac-Man gameplay
-- 4 colorful ghosts with AI
-- Score tracking
+- **3 Different Maps** that cycle through levels:
+  - **Map 1: Classic Layout** - Traditional Pac-Man maze
+  - **Map 2: Open Corridors** - Wide open spaces with strategic walls
+  - **Map 3: Maze Challenge** - Complex pathways and tight corners
+- 4 colorful ghosts with random AI movement
+- Power mode - Eat ghosts for bonus points
+- Score tracking and level progression
 - Lives system
-- Responsive controls using arrow keys
+- Responsive design for mobile and desktop
+- Touch controls and swipe gestures for mobile
 - Start, Pause, and Restart functionality
 
 ## How to Play
@@ -34,6 +40,18 @@ A classic Pac-Man game built with HTML5 Canvas, CSS, and JavaScript.
 
 - Small dot: 10 points
 - Power pellet: 50 points
+- Eating ghosts: 200, 400, 800, 1600 points
+- Level completion bonus: 1000 points
+
+## Maps
+
+The game features 3 unique maps that cycle as you progress through levels:
+
+1. **Classic Layout** - The traditional Pac-Man experience with balanced corridors
+2. **Open Corridors** - More open spaces allowing for faster gameplay and strategic chasing
+3. **Maze Challenge** - Complex maze with narrow passages and challenging navigation
+
+Each map presents different challenges and requires different strategies to complete!
 
 ## Installation
 
